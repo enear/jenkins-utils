@@ -2,6 +2,7 @@ import ssl
 import json
 import argparse
 from urllib.request import urlopen
+from colorama import init, Fore
 
 python_api_url = 'https://{}/jenkins/api/json'
 
@@ -21,11 +22,11 @@ def output_job(job, show_success, show_failed, show_disabled, show_all):
     name = job['name']
     color = job['color']
     if color == 'blue' and (show_success or show_all):
-        print(name)
+        print(Fore.GREEN + name)
     if color == 'red' and (show_failed or show_all):
-        print(name)
+        print(Fore.RED + name)
     if color == 'disabled' and (show_disabled or show_all):
-        print(name)
+        print(Fore.MAGENTA + name)
 
 def output_jobs(hostname, show_success, show_failed, show_disabled, show_all):
     result = get_json(hostname)
@@ -46,6 +47,8 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    init()
+
     args = parse_args()
     hostname = args.hostname
     show_success = args.show_success
